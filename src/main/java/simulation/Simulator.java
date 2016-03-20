@@ -31,6 +31,7 @@ public class Simulator {
     /**
      * The number of cycles a tracker has to be simulated before it sends data.
      */
+    //Als de simulation interval te klein wordt (bijv. 30) dan komt er een devide by zero exception
     private static final int TRACKING_PERIOD_CYCLES = (int) (14400 / (SIMULATION_INTERVAL / 1000)); //14400 sec = 4 hours
 
     private boolean running = true;
@@ -66,7 +67,8 @@ public class Simulator {
             }
 
             try {
-                Thread.sleep(SIMULATION_INTERVAL);
+                //Thread.sleep(SIMULATION_INTERVAL);
+                Thread.sleep(30);
             } catch (InterruptedException ignored) {
             }
         }
@@ -166,7 +168,10 @@ public class Simulator {
      */
     private void sendData(CarTracker tracker) {
         //Eric
-        System.out.println("CarId= " + tracker.getId() + " position lat= " + tracker.getLastPosition().getLatitude());
+        System.out.println("CarId= " + tracker.getId() + " position long" + tracker.getLastPosition().getLongitude() + " position lat= " + tracker.getLastPosition().getLatitude());
+        
+        
+        
     }
 
     //<editor-fold desc="Utility Methods">
