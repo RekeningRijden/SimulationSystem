@@ -1,5 +1,5 @@
 /**
- * Created by Sam on 22-3-2016.
+ * @author Sam
  */
 public class SimulatorTest {
 }

@@ -1,8 +1,19 @@
 package domain;
 
+import com.google.gson.annotations.Expose;
+
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import simulation.SimulationInfo;
 
@@ -12,19 +23,20 @@ import simulation.SimulationInfo;
 public class CarTracker implements Serializable {
 
     private Long id;
+    @Expose
     private String authorisationCode;
     private List<TrackingPeriod> trackingPeriods;
 
     private SimulationInfo simulationInfo;
 
-    public CarTracker(Long id, SimulationInfo info) {
-        this.id = id;
+    public CarTracker(SimulationInfo info) {
         this.simulationInfo = info;
         this.trackingPeriods = new ArrayList<>();
 
         TrackingPeriod trackingPeriod = new TrackingPeriod(0L);
         trackingPeriod.addPosition(info.getStartingPosition());
         trackingPeriods.add(trackingPeriod);
+        this.generateAuthorisationCode();
     }
 
     /**
@@ -56,9 +68,39 @@ public class CarTracker implements Serializable {
         }
     }
 
+    private void generateAuthorisationCode() {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(UUID.randomUUID().toString().getBytes());
+
+            StringBuilder sb = new StringBuilder();
+            for (byte b : array) {
+                sb.append(Integer.toHexString((b & 0xFF) | 0x100).substring(1, 3));
+            }
+
+            this.authorisationCode = sb.toString();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(CarTracker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void saveAuthorisationCodeFile() {
+        try {
+            byte data[] = getAuthorisationCode().getBytes();
+            Path file = Paths.get("authcodetestfile");
+            Files.write(file, data);
+        } catch (IOException ex) {
+            Logger.getLogger(CarTracker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     //<editor-fold desc="Getters/Setters">
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAuthorisationCode() {
