@@ -27,5 +27,7 @@ hs_err_pid*
 /release.properties
 /dependency-reduced-pom.xml
 /buildNumber.properties
+nb-configuration.xml
+SimulationSystem.iml
 .mvn/timing.properties
 
