@@ -1,5 +1,6 @@
 package domain;
 
+import com.google.gson.annotations.Expose;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,19 +19,20 @@ import simulation.SimulationInfo;
 public class CarTracker {
 
     private Long id;
+    @Expose
     private String authorisationCode;
     private List<TrackingPeriod> trackingPeriods;
 
     private SimulationInfo simulationInfo;
 
-    public CarTracker(Long id, SimulationInfo info) {
-        this.id = id;
+    public CarTracker(SimulationInfo info) {
         this.simulationInfo = info;
         this.trackingPeriods = new ArrayList<>();
 
         TrackingPeriod trackingPeriod = new TrackingPeriod(0L);
         trackingPeriod.addPosition(info.getStartingPosition());
         trackingPeriods.add(trackingPeriod);
+        this.generateAuthorisationCode();
     }
 
     /**
@@ -73,7 +75,7 @@ public class CarTracker {
                 sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
             }
 
-            this.authorisationCode  =  sb.toString();
+            this.authorisationCode = sb.toString();
 
         } catch (NoSuchAlgorithmException e) {
         }
@@ -92,6 +94,10 @@ public class CarTracker {
     //<editor-fold desc="Getters/Setters">
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAuthorisationCode() {
