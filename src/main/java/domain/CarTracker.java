@@ -1,7 +1,14 @@
 package domain;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import simulation.SimulationInfo;
 
@@ -52,6 +59,33 @@ public class CarTracker {
             return trackingPeriods.get((trackingPeriods.size() - 2)).getLastPosition();
         } else {
             return getCurrentTrackingPeriod().getLastPosition();
+        }
+    }
+    
+    public void generateAuthorisationCode() {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(UUID.randomUUID().toString().getBytes());
+
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < array.length; ++i) {
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
+            }
+
+            this.authorisationCode  =  sb.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+        }
+    }
+    
+    public void saveAuthorisationCodeFile() {
+        try {
+            byte data[] = getAuthorisationCode().getBytes();
+            Path file = Paths.get("authcodetestfile");
+            Files.write(file, data);
+        } catch (IOException ex) {
+            System.out.println(ex);
         }
     }
 
