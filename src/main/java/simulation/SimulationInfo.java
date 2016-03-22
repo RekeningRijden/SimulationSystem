@@ -1,11 +1,13 @@
 package simulation;
 
+import java.io.Serializable;
+
 import domain.Position;
 
 /**
  * Class to keep Info about the simulation of a carTracker.
  */
-public class SimulationInfo {
+public class SimulationInfo implements Serializable {
 
     /**
      * SimulationCycles a tracker's car has to drive before it can stop.

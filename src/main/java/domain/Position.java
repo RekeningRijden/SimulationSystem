@@ -1,11 +1,12 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Class to keep info about a certain position a cartTacker's car was at.
  */
-public class Position {
+public class Position implements Serializable {
 
     private Long id;
     private Date date;

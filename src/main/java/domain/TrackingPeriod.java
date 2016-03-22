@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * Class keeping data about a certain period of a carTracker.
  */
-public class TrackingPeriod {
+public class TrackingPeriod implements Serializable {
 
     private Long serialNumber;
     private Date startedTracking;

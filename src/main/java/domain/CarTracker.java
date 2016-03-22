@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import simulation.SimulationInfo;
 /**
  * Class to keep info about a carTracker.
  */
-public class CarTracker {
+public class CarTracker implements Serializable {
 
     private Long id;
     private String authorisationCode;
