@@ -1,5 +1,7 @@
 package domain;
 
+import com.google.gson.annotations.Expose;
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,8 +13,12 @@ import java.util.List;
 public class TrackingPeriod implements Serializable {
 
     private Long serialNumber;
+    
+    @Expose
     private Date startedTracking;
+    @Expose
     private Date finishedTracking;
+    @Expose
     private List<Position> positions;
 
     public TrackingPeriod(Long serialNumber) {

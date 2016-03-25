@@ -16,6 +16,7 @@ public class Position implements Serializable {
     public Position(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
+        this.date = new Date();
     }
 
     //<editor-fold desc="Getters/Setters">

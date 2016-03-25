@@ -87,7 +87,9 @@ public class Simulator {
 
             CarTracker tracker = new CarTracker(simulationInfo);
             try {
+                //TODO turned off becuase the Communcator.doPost
                 tracker.setId(Communicator.subscribeTracker(tracker));
+                tracker.setId(i+1);
                 trackers.add(tracker);
             } catch (IOException | JSONException ex) {
                 Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
@@ -214,7 +216,13 @@ public class Simulator {
     private void sendData(CarTracker tracker) {
         IOHelper.serialize(trackers);
 
-        System.out.println("CarId= " + tracker.getId() + " position long" + tracker.getLastPosition().getLongitude() + " position lat= " + tracker.getLastPosition().getLatitude());
+        try {
+            Communicator.postTrackingPositionsForTracker(tracker);
+        }
+        catch (IOException | JSONException ex) {
+            Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("CarId= " + tracker.getId() + ", AuthoCod= :" + tracker.getAuthorisationCode() + " position long" + tracker.getLastPosition().getLongitude() + " position lat= " + tracker.getLastPosition().getLatitude());
     }
 
     //<editor-fold desc="Utility Methods">

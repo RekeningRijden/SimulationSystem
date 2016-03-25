@@ -25,6 +25,7 @@ public class CarTracker implements Serializable {
     private Long id;
     @Expose
     private String authorisationCode;
+    
     private List<TrackingPeriod> trackingPeriods;
 
     private SimulationInfo simulationInfo;
