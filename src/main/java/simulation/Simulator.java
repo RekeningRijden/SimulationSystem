@@ -25,32 +25,46 @@ public class Simulator {
      * The time in milliseconds the simulation waits when it has simulated all
      * trackers once before starting again.
      */
-    private static final long SIMULATION_INTERVAL = 3000; //3 seconds
+    private long simulationInterval;
 
     /**
      * The amount of trackers to simulate.
      */
-    private static final long AMOUNT_OF_TRACKERS = 1;
+    private long amountOfTrackers;
 
     /**
      * The degrees per second a car travels when it's driving at 80 km per hour.
      */
-    private static final double CAR_SPEED = (0.0002 * (SIMULATION_INTERVAL / 1000));
+    private double carSpeed;
 
     /**
      * The number of cycles a tracker has to be simulated before it sends data.
      */
-    //private static final int TRACKING_PERIOD_CYCLES = (int) (14400 / (SIMULATION_INTERVAL / 1000)); //14400 sec = 4 hours
-    private static final int TRACKING_PERIOD_CYCLES = 1; //use for testing
+    private int trackingPeriodCycles; //use for testing
 
+    /**
+     * Indicates if the simulation can start another simulation cycle.
+     */
     private boolean running = true;
 
+    /**
+     * Trackers being simulated.
+     */
     private List<CarTracker> trackers;
 
-    public static void main(String[] args) {
-        Simulator simulator = new Simulator();
-        simulator.before();
-        simulator.simulate();
+    public Simulator(long simulationInterval, long amountOfTrackers, int trackingPeriodCycles) {
+        this.simulationInterval = simulationInterval;
+        this.amountOfTrackers = amountOfTrackers;
+        this.trackingPeriodCycles = trackingPeriodCycles;
+        this.carSpeed = (0.0002 * (this.simulationInterval / 1000));
+    }
+
+    /**
+     * Prepare the simulation and start it when ready.
+     */
+    public void start() {
+        before();
+        simulate();
     }
 
     /**
@@ -80,7 +94,7 @@ public class Simulator {
      */
     private void generateCarTrackers() {
         trackers = new ArrayList<>();
-        for (long i = 0; i < AMOUNT_OF_TRACKERS; i++) {
+        for (long i = 0; i < amountOfTrackers; i++) {
             SimulationInfo simulationInfo = createSimulationInfo();
             //simulationInfo.setTrackingPeriodCycles(getRandomCycles(10, 480));
             simulationInfo.setTrackingPeriodCycles(1);
@@ -89,7 +103,7 @@ public class Simulator {
             try {
                 //TODO turned off becuase the Communcator.doPost
                 tracker.setId(Communicator.subscribeTracker(tracker));
-                tracker.setId(i+1);
+                tracker.setId(i + 1);
                 trackers.add(tracker);
             } catch (IOException | JSONException ex) {
                 Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
@@ -107,8 +121,10 @@ public class Simulator {
                 simulateTracker(tracker);
             }
 
+            IOHelper.serialize(trackers);
+
             try {
-                Thread.sleep(SIMULATION_INTERVAL);
+                Thread.sleep(simulationInterval);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -135,7 +151,7 @@ public class Simulator {
             sendData(tracker);
 
             tracker.startTrackingPeriod();
-            tracker.getSimulationInfo().setTrackingPeriodCycles(TRACKING_PERIOD_CYCLES);
+            tracker.getSimulationInfo().setTrackingPeriodCycles(trackingPeriodCycles);
         } else {
             info.decreaseTrackingPeriodCycles();
         }
@@ -199,12 +215,10 @@ public class Simulator {
     }
 
     /**
-     * Stop the simulation and save the simulation data to a file.
+     * Stop the simulation when the current simulation cycle has finished.
      */
     public void stop() {
         running = false;
-
-        IOHelper.serialize(trackers);
     }
 
     /**
@@ -214,12 +228,9 @@ public class Simulator {
      * @param tracker to send the data from.
      */
     private void sendData(CarTracker tracker) {
-        IOHelper.serialize(trackers);
-
         try {
             Communicator.postTrackingPositionsForTracker(tracker);
-        }
-        catch (IOException | JSONException ex) {
+        } catch (IOException | JSONException ex) {
             Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println("CarId= " + tracker.getId() + ", AuthoCod= :" + tracker.getAuthorisationCode() + " position long" + tracker.getLastPosition().getLongitude() + " position lat= " + tracker.getLastPosition().getLatitude());
@@ -240,7 +251,7 @@ public class Simulator {
         return new SimulationInfo(
                 cyclesToDrive,
                 cyclesToWait,
-                TRACKING_PERIOD_CYCLES,
+                trackingPeriodCycles,
                 getCarSpeed(),
                 startingPosition);
     }
@@ -279,7 +290,11 @@ public class Simulator {
      */
     private double getCarSpeed() {
         double multiplier = ThreadLocalRandom.current().nextBoolean() ? 1.0 : -1.0;
-        return CAR_SPEED * multiplier;
+        return carSpeed * multiplier;
     }
     //</editor-fold>
+
+    public boolean isRunning() {
+        return running;
+    }
 }

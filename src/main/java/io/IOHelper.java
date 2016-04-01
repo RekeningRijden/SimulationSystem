@@ -21,7 +21,7 @@ public class IOHelper {
     /**
      * File to save to, and retrieve data from.
      */
-    private static final String FILE = "trackers.tmp";
+    private static final String FILE = "C:\\School\\PTS6\\SimulationSystem\\trackers.tmp";
 
     /**
      * Save a list of carTrackers to a file.
