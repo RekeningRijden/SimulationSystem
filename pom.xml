@@ -6,7 +6,7 @@
     <groupId>Rekeningrijden</groupId>
     <artifactId>SimulationSystem</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>Rekeningrijden</name>
     <url>http://maven.apache.org</url>
 
