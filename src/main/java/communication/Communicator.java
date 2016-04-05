@@ -28,9 +28,18 @@ import org.json.JSONObject;
  */
 public class Communicator {
 
+    /**
+     * The url of the Movementsystem api.
+     */
     private static final String BASE_URL = "http://localhost:8080/MovementSystem/webresources/trackers";
 
-    public static Long subscribeTracker(CarTracker tracker) throws IOException, JSONException {
+    /**
+     * Adds a new cartracker to the movement api
+     * @param tracker The cartracker new cartracker
+     * @return The newly added cartracker
+     * @throws IOException Can happen when something is wrong with (StringEntity(jsonBody) en httpClient.execute(post)
+     */
+    public static Long subscribeTracker(CarTracker tracker) throws IOException {
         //Request
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
@@ -48,7 +57,13 @@ public class Communicator {
         return json.getLong("id");
     }
 
-    public static Long postTrackingPositionsForTracker(CarTracker tracker) throws IOException, JSONException {
+    /**
+     * Adds a new trackingPosition to an existing cartracker
+     * @param tracker The cartracker with a new trackingPosition
+     * @return The serialnumber of the new trackingPosition
+     * @throws IOException
+     */
+    public static Long postTrackingPositionsForTracker(CarTracker tracker) throws IOException {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").excludeFieldsWithoutExposeAnnotation().create();
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(BASE_URL + "/" + tracker.getId() + "/movements");
