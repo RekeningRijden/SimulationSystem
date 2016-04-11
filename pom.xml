@@ -113,7 +113,7 @@
 
     </dependencies>
 	
-	<profiles>
+<!--	<profiles>
         <profile>
             <id>cargo-deploy</id>
             <pluginRepositories>
@@ -165,6 +165,6 @@
                 </plugins>
             </build>
         </profile>
-    </profiles>
+    </profiles>-->
 
 </project>
