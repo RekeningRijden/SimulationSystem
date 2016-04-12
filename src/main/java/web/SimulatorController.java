@@ -1,10 +1,12 @@
 package web;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
+import communication.Communicator;
 import simulation.Simulator;
 
 /**
@@ -25,8 +27,14 @@ public class SimulatorController implements Serializable {
      * Start the simulation.
      */
     public void start() {
-        simulator = new Simulator(simulationInterval, amountOfTrackers, trackingPeriodCycles);
-        simulator.start();
+        try {
+            Communicator.getAllCartrackers();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //simulator = new Simulator(simulationInterval, amountOfTrackers, trackingPeriodCycles);
+        //simulator.start();
     }
 
     /**

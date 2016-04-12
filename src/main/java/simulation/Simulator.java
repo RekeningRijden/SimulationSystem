@@ -94,21 +94,21 @@ public class Simulator {
      */
     private void generateCarTrackers() {
         trackers = new ArrayList<>();
-        for (long i = 0; i < amountOfTrackers; i++) {
-            SimulationInfo simulationInfo = createSimulationInfo();
-            //simulationInfo.setTrackingPeriodCycles(getRandomCycles(10, 480));
-            simulationInfo.setTrackingPeriodCycles(1);
-
-            CarTracker tracker = new CarTracker(simulationInfo);
-            try {
-                //TODO turned off becuase the Communcator.doPost
-                tracker.setId(Communicator.subscribeTracker(tracker));
-                tracker.setId(i + 1);
-                trackers.add(tracker);
-            } catch (IOException | JSONException ex) {
-                Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+//        for (long i = 0; i < amountOfTrackers; i++) {
+//            SimulationInfo simulationInfo = createSimulationInfo();
+//            //simulationInfo.setTrackingPeriodCycles(getRandomCycles(10, 480));
+//            simulationInfo.setTrackingPeriodCycles(1);
+//
+//            CarTracker tracker = new CarTracker(simulationInfo);
+//            try {
+//                //TODO turned off becuase the Communcator.doPost
+//                tracker.setId(Communicator.subscribeTracker(tracker));
+//                tracker.setId(i + 1);
+//                trackers.add(tracker);
+//            } catch (IOException | JSONException ex) {
+//                Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
     }
 
     /**
