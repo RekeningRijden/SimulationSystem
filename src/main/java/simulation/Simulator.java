@@ -28,11 +28,6 @@ public class Simulator {
     private long simulationInterval;
 
     /**
-     * The amount of trackers to simulate.
-     */
-    private long amountOfTrackers;
-
-    /**
      * The degrees per second a car travels when it's driving at 80 km per hour.
      */
     private double carSpeed;
@@ -52,11 +47,21 @@ public class Simulator {
      */
     private List<CarTracker> trackers;
 
-    public Simulator(long simulationInterval, long amountOfTrackers, int trackingPeriodCycles) {
+    public Simulator(long simulationInterval, int trackingPeriodCycles) {
         this.simulationInterval = simulationInterval;
-        this.amountOfTrackers = amountOfTrackers;
         this.trackingPeriodCycles = trackingPeriodCycles;
         this.carSpeed = (0.0002 * (this.simulationInterval / 1000));
+
+        try {
+            this.trackers = Communicator.getAllCartrackers();
+        } catch (IOException ex) {
+            Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+            this.running = false;
+        }
+
+        if (trackers == null || trackers.isEmpty()) {
+            this.running = false;
+        }
     }
 
     /**
@@ -72,43 +77,16 @@ public class Simulator {
      * Generate new trackers if no previous data was found.
      */
     private void before() {
-        if (IOHelper.previousDataAvailable()) {
-            try {
-                trackers = IOHelper.deserialize();
-            } catch (IOException | ClassNotFoundException ex) {
-                Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
-                generateCarTrackers();
+        for(CarTracker tracker : trackers) {
+            SimulationInfo simulationInfo = createSimulationInfo();
+            //simulationInfo.setTrackingPeriodCycles(getRandomCycles(10, 480));
+            simulationInfo.setTrackingPeriodCycles(1);
+            if (tracker.getTrackingPeriods().isEmpty()) {
+                tracker.setInitialSimulationInfo(simulationInfo);
+            } else {
+                tracker.setSimulationInfo(simulationInfo);
             }
-        } else {
-            generateCarTrackers();
         }
-
-        if (trackers.isEmpty()) {
-            running = false;
-        }
-    }
-
-    /**
-     * Get the simulation ready by creating all the trackers and their belonging
-     * simulation info.
-     */
-    private void generateCarTrackers() {
-        trackers = new ArrayList<>();
-//        for (long i = 0; i < amountOfTrackers; i++) {
-//            SimulationInfo simulationInfo = createSimulationInfo();
-//            //simulationInfo.setTrackingPeriodCycles(getRandomCycles(10, 480));
-//            simulationInfo.setTrackingPeriodCycles(1);
-//
-//            CarTracker tracker = new CarTracker(simulationInfo);
-//            try {
-//                //TODO turned off becuase the Communcator.doPost
-//                tracker.setId(Communicator.subscribeTracker(tracker));
-//                tracker.setId(i + 1);
-//                trackers.add(tracker);
-//            } catch (IOException | JSONException ex) {
-//                Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
     }
 
     /**

@@ -27,14 +27,8 @@ public class SimulatorController implements Serializable {
      * Start the simulation.
      */
     public void start() {
-        try {
-            Communicator.getAllCartrackers();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //simulator = new Simulator(simulationInterval, amountOfTrackers, trackingPeriodCycles);
-        //simulator.start();
+        simulator = new Simulator(simulationInterval, trackingPeriodCycles);
+        simulator.start();
     }
 
     /**

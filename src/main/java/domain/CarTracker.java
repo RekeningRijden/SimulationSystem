@@ -30,14 +30,8 @@ public class CarTracker implements Serializable {
 
     private SimulationInfo simulationInfo;
 
-    public CarTracker(SimulationInfo info) {
-        this.simulationInfo = info;
+    public CarTracker() {
         this.trackingPeriods = new ArrayList<>();
-
-        TrackingPeriod trackingPeriod = new TrackingPeriod(0L);
-        trackingPeriod.addPosition(info.getStartingPosition());
-        trackingPeriods.add(trackingPeriod);
-        this.generateAuthorisationCode();
     }
 
     /**
@@ -69,21 +63,7 @@ public class CarTracker implements Serializable {
         }
     }
 
-    private void generateAuthorisationCode() {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] array = md.digest(UUID.randomUUID().toString().getBytes());
 
-            StringBuilder sb = new StringBuilder();
-            for (byte b : array) {
-                sb.append(Integer.toHexString((b & 0xFF) | 0x100).substring(1, 3));
-            }
-
-            this.authorisationCode = sb.toString();
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CarTracker.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     public void saveAuthorisationCodeFile() {
         try {
@@ -93,6 +73,15 @@ public class CarTracker implements Serializable {
         } catch (IOException ex) {
             Logger.getLogger(CarTracker.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void setInitialSimulationInfo(SimulationInfo info) {
+        this.simulationInfo = info;
+
+
+        TrackingPeriod trackingPeriod = new TrackingPeriod(0L);
+        trackingPeriod.addPosition(info.getStartingPosition());
+        trackingPeriods.add(trackingPeriod);
     }
 
     //<editor-fold desc="Getters/Setters">
