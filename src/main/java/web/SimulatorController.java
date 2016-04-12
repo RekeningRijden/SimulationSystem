@@ -1,12 +1,10 @@
 package web;
 
-import java.io.IOException;
 import java.io.Serializable;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
-import communication.Communicator;
 import simulation.Simulator;
 
 /**
@@ -23,12 +21,14 @@ public class SimulatorController implements Serializable {
 
     private Simulator simulator;
 
+    private Thread simulationThread;
+
     /**
-     * Start the simulation.
+     * Start the simulation which is running on a newly spawned thread.
      */
     public void start() {
-        simulator = new Simulator(simulationInterval, trackingPeriodCycles);
-        simulator.start();
+        simulationThread = new Thread(new SimulationRunnable());
+        simulationThread.start();
     }
 
     /**
@@ -36,6 +36,19 @@ public class SimulatorController implements Serializable {
      */
     public void stop() {
         simulator.stop();
+        simulationThread.interrupt();
+    }
+
+    /**
+     * Class used for instructing a thread to run the simulator.
+     */
+    private class SimulationRunnable implements Runnable {
+
+        @Override
+        public void run() {
+            simulator = new Simulator(simulationInterval, trackingPeriodCycles);
+            simulator.start();
+        }
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
