@@ -43,30 +43,6 @@ public class Communicator {
      */
     private static final String BASE_URL_PRODUCTION = "http://movement.s63a.marijn.ws/api/trackers";
 
-//    /**
-//     * Adds a new cartracker to the movement api
-//     * @param tracker The cartracker new cartracker
-//     * @return The newly added cartracker
-//     * @throws IOException Can happen when something is wrong with (StringEntity(jsonBody) en httpClient.execute(post)
-//     */
-//    public static Long subscribeTracker(CarTracker tracker) throws IOException {
-//        //Request
-//        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-//        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-//        HttpPost post = new HttpPost(BASE_URL);
-//        String jsonBody = gson.toJson(tracker);
-//        StringEntity postingString = new StringEntity(jsonBody);
-//        post.setEntity(postingString);
-//        post.setHeader("Content-type", "application/json");
-//        HttpResponse response = httpClient.execute(post);
-//
-//        //Response
-//        String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-//        JSONObject json = new JSONObject(responseString);
-//        System.out.println("JSON Response: " + json);
-//        return json.getLong("id");
-//    }
-
     /**
      * Adds a new trackingPosition to an existing cartracker
      * @param tracker The cartracker with a new trackingPosition
