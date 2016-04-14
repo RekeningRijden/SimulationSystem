@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
+ * This class handles the communication to and from the Movementsystem Api
  *
  * @author Eric
  */
@@ -66,6 +67,11 @@ public class Communicator {
         return json.getLong("serialNumber");
     }
 
+    /**
+     * Gets all the cartrackers from the Movementsystem api
+     * @return A list with all the cartrackers from the Movementsystem api
+     * @throws IOException Could be thrown when executing the http request, or when converting the result to a String
+     */
     public static List<CarTracker> getAllCartrackers() throws IOException {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         HttpGet get = new HttpGet(BASE_URL_TEST);
