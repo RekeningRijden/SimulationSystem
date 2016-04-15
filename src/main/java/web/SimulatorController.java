@@ -15,7 +15,6 @@ import simulation.Simulator;
 public class SimulatorController implements Serializable {
 
     private long simulationInterval = 3000; //3 seconds
-    private long amountOfTrackers = 1;
     //(int) (14400 / (SIMULATION_INTERVAL / 1000)); //14400 sec = 4 hours
     private int trackingPeriodCycles = 1;  //use for testing
 
@@ -58,14 +57,6 @@ public class SimulatorController implements Serializable {
 
     public void setSimulationInterval(long simulationInterval) {
         this.simulationInterval = simulationInterval;
-    }
-
-    public long getAmountOfTrackers() {
-        return amountOfTrackers;
-    }
-
-    public void setAmountOfTrackers(long amountOfTrackers) {
-        this.amountOfTrackers = amountOfTrackers;
     }
 
     public int getTrackingPeriodCycles() {
