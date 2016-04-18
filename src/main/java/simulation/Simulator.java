@@ -2,6 +2,7 @@ package simulation;
 
 import communication.Communicator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,7 +20,7 @@ import org.json.JSONException;
 /**
  * Class to simulate cars driving in Portugal.
  */
-public class Simulator {
+public class Simulator implements Serializable{
 
     /**
      * The time in milliseconds the simulation waits when it has simulated all
