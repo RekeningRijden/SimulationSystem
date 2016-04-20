@@ -30,12 +30,8 @@
 
             <div class="line"></div>
 
-            <h:commandButton value="Start" action="#{simulatorController.start()}" rendered="#{!simulatorController.isRunning()}">
-                <f:ajax execute="@form" rendered="@form"/>
-            </h:commandButton>
-            <h:commandButton value="Stop" action="#{simulatorController.stop()}" rendered="#{simulatorController.isRunning()}">
-                <f:ajax execute="@form" rendered="@form"/>
-            </h:commandButton>
+            <h:commandButton value="Start" action="#{simulatorController.start()}" rendered="#{!simulatorController.isRunning()}"/>
+            <h:commandButton value="Stop" action="#{simulatorController.stop()}" rendered="#{simulatorController.isRunning()}"/>
         </h:form>
     </h:body>
 </html>
