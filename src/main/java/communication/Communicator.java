@@ -37,12 +37,12 @@ public class Communicator {
     /**
      * The test url of the Movementsystem api.
      */
-    private static final String BASE_URL_TEST = "http://localhost:8080/MovementSystem/api/trackers";
+    //private static final String BASE_URL_TEST = "http://localhost:8080/MovementSystem/api/trackers";
 
     /**
      * The production url of the Movementsystem api.
      */
-     //private static final String BASE_URL_PRODUCTION = "http://movement.s63a.marijn.ws/api/trackers";
+     private static final String BASE_URL_PRODUCTION = "http://movement.s63a.marijn.ws/api/trackers";
 
     /**
      * Adds a new trackingPosition to an existing cartracker
@@ -53,7 +53,7 @@ public class Communicator {
     public static Long postTrackingPositionsForTracker(CarTracker tracker) throws IOException {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        HttpPost post = new HttpPost(BASE_URL_TEST  + "/" + tracker.getId() + "/movements");
+        HttpPost post = new HttpPost(BASE_URL_PRODUCTION  + "/" + tracker.getId() + "/movements");
         String jsonBody = gson.toJson(tracker.getCurrentTrackingPeriod());
         StringEntity postingString = new StringEntity(jsonBody, "UTF-8");
         System.out.println("POSTString: " + jsonBody);
@@ -74,7 +74,7 @@ public class Communicator {
      */
     public static List<CarTracker> getAllCartrackers() throws IOException {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        HttpGet get = new HttpGet(BASE_URL_TEST);
+        HttpGet get = new HttpGet(BASE_URL_PRODUCTION);
         HttpResponse response = httpClient.execute(get);
 
         String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
