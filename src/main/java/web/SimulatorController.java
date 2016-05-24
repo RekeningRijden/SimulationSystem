@@ -20,17 +20,14 @@ public class SimulatorController implements Serializable {
 
     private Simulator simulator;
 
-    private Thread simulationThread;
-    
-    private boolean started = false;
-
     /**
      * Start the simulation which is running on a newly spawned thread.
      */
     public void start() {
-        simulationThread = new Thread(new SimulationRunnable());
+        simulator = new Simulator(simulationInterval, trackingPeriodCycles);
+
+        Thread simulationThread = new Thread(simulator);
         simulationThread.start();
-        started = true;
     }
 
     /**
@@ -38,20 +35,6 @@ public class SimulatorController implements Serializable {
      */
     public void stop() {
         simulator.stop();
-        simulationThread.interrupt();
-        started = false;
-    }
-
-    /**
-     * Class used for instructing a thread to run the simulator.
-     */
-    private class SimulationRunnable implements Runnable {
-
-        @Override
-        public void run() {
-            simulator = new Simulator(simulationInterval, trackingPeriodCycles);
-            simulator.start();
-        }
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
@@ -61,14 +44,6 @@ public class SimulatorController implements Serializable {
 
     public void setSimulationInterval(long simulationInterval) {
         this.simulationInterval = simulationInterval;
-    }
-
-    public boolean isStarted() {
-        return started;
-    }
-
-    public void setStarted(boolean started) {
-        this.started = started;
     }
 
     public int getTrackingPeriodCycles() {
