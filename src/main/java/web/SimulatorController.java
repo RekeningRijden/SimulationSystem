@@ -22,15 +22,13 @@ public class SimulatorController implements Serializable {
 
     private Thread simulationThread;
 
-    private boolean started = false;
-
     /**
      * Start the simulation which is running on a newly spawned thread.
      */
     public void start() {
         simulator = new Simulator(simulationInterval, trackingPeriodCycles);
 
-        Thread simulationThread = new Thread(simulator);
+        simulationThread = new Thread(simulator);
         simulationThread.start();
     }
 
