@@ -21,7 +21,7 @@ public class SimulatorController implements Serializable {
     private Simulator simulator;
 
     private Thread simulationThread;
-    
+
     private boolean started = false;
 
     /**

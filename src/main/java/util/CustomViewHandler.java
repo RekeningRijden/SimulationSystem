@@ -11,6 +11,7 @@ import java.util.Map;
  * Created by Eric on 20-04-16.
  */
 public class CustomViewHandler extends ViewHandlerWrapper {
+
     private ViewHandler wrappped;
 
     public CustomViewHandler(ViewHandler wrappped) {
@@ -25,13 +26,13 @@ public class CustomViewHandler extends ViewHandlerWrapper {
 
     @Override
     public String getActionURL(FacesContext context, String viewId) {
-        String url =  super.getActionURL(context, viewId);
+        String url = super.getActionURL(context, viewId);
         return removeContextPath(context, url);
     }
 
     @Override
     public String getRedirectURL(FacesContext context, String viewId, Map<String, List<String>> parameters, boolean includeViewParams) {
-        String url =  super.getRedirectURL(context, viewId, parameters, includeViewParams);
+        String url = super.getRedirectURL(context, viewId, parameters, includeViewParams);
         return removeContextPath(context, url);
     }
 
@@ -41,10 +42,12 @@ public class CustomViewHandler extends ViewHandlerWrapper {
         return removeContextPath(context, url);
     }
 
-    private String removeContextPath(FacesContext context, String url) {
+    private static String removeContextPath(FacesContext context, String url) {
         ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
         String contextPath = servletContext.getContextPath();
-        if("".equals(contextPath)) return url; // root context path, nothing to remove
+        if ("".equals(contextPath)) {
+            return url; // root context path, nothing to remove
+        }
         return url.startsWith(contextPath) ? url.substring(contextPath.length()) : url;
     }
 }

@@ -1,6 +1,6 @@
 package simulation;
 
-class Constants {
+public class Constants {
 
     /**
      * Borders of Portugal if Portugal was a rectangle.

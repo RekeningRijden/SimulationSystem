@@ -1,7 +1,6 @@
 package domain;
 
 import com.google.gson.annotations.Expose;
-import java.beans.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +12,7 @@ import java.util.List;
 public class TrackingPeriod implements Serializable {
 
     private Long serialNumber;
-    
+
     @Expose
     private Date startedTracking;
     @Expose
@@ -40,7 +39,7 @@ public class TrackingPeriod implements Serializable {
      * @return the last position the carTracker was at in this trackingPeriod.
      */
     public Position getLastPosition() {
-        return positions.get((positions.size() - 1));
+        return positions.get(positions.size() - 1);
     }
 
     /**

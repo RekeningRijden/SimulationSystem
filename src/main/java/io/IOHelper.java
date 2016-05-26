@@ -12,11 +12,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import domain.CarTracker;
+import java.util.ArrayList;
 
 /**
  * Class for saving and loading simulation data to a file.
  */
 public class IOHelper {
+
+    public IOHelper() {
+        // empty constructor
+    }
 
     /**
      * File to save to, and retrieve data from.
@@ -32,7 +37,7 @@ public class IOHelper {
         ObjectOutputStream oos = null;
         try {
             oos = new ObjectOutputStream(new FileOutputStream(getFile()));
-            oos.writeObject(carTrackers);
+            oos.writeObject((ArrayList) carTrackers);
         } catch (IOException ex) {
             Logger.getLogger(IOHelper.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -44,7 +49,7 @@ public class IOHelper {
      * Load previously used saved carTrackers from a file.
      *
      * @return a list of carTrackers.
-     * @throws IOException            to be thrown.
+     * @throws IOException to be thrown.
      * @throws ClassNotFoundException to be thrown.
      */
     @SuppressWarnings("unchecked")
