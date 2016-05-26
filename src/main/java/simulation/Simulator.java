@@ -71,7 +71,8 @@ public class Simulator implements Runnable, Serializable {
      */
     public void start() {
         before();
-        run();
+        Thread thread = new Thread(this);
+        thread.run();
     }
 
     /**
@@ -81,7 +82,7 @@ public class Simulator implements Runnable, Serializable {
     private void before() {
         for (CarTracker tracker : trackers) {
             SimulationInfo simulationInfo = createSimulationInfo();
-            //simulationInfo.setTrackingPeriodCycles(getRandomCycles(10, 480));
+            /* simulationInfo.setTrackingPeriodCycles(getRandomCycles(10, 480)); */
             simulationInfo.setTrackingPeriodCycles(1);
             if (tracker.getTrackingPeriods().isEmpty()) {
                 tracker.setInitialSimulationInfo(simulationInfo);
@@ -215,7 +216,7 @@ public class Simulator implements Runnable, Serializable {
         } catch (IOException | JSONException ex) {
             Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //System.out.println("CarId= " + tracker.getId() + ", AuthoCod= :" + tracker.getAuthorisationCode() + " position long" + tracker.getLastPosition().getLongitude() + " position lat= " + tracker.getLastPosition().getLatitude());
+        /* System.out.println("CarId= " + tracker.getId() + ", AuthoCod= :" + tracker.getAuthorisationCode() + " position long" + tracker.getLastPosition().getLongitude() + " position lat= " + tracker.getLastPosition().getLatitude()); */
     }
 
     //<editor-fold desc="Utility Methods">
