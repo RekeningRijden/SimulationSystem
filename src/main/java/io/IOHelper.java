@@ -24,6 +24,10 @@ public class IOHelper {
      */
     private static final String FILE = "C:\\School\\PTS6\\SimulationSystem\\trackers.tmp";
 
+    private IOHelper() {
+        // emtpy constructor
+    }
+
     /**
      * Save a list of carTrackers to a file.
      *

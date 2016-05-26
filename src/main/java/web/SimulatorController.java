@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import javax.persistence.Transient;
-
 import simulation.Simulator;
 
 /**
@@ -21,8 +19,7 @@ public class SimulatorController implements Serializable {
 
     private Simulator simulator;
 
-    @Transient
-    private Thread simulationThread;
+    private transient Thread simulationThread;
 
     /**
      * Start the simulation which is running on a newly spawned thread.
