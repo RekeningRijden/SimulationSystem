@@ -17,9 +17,9 @@ import java.util.logging.Logger;
 import org.json.JSONException;
 
 /**
- * Class to simulate cars driving in Portugal.
+ * Class to run cars driving in Portugal.
  */
-public class Simulator implements Serializable {
+public class Simulator implements Runnable, Serializable {
 
     /**
      * The time in milliseconds the simulation waits when it has simulated all
@@ -62,6 +62,8 @@ public class Simulator implements Serializable {
         if (trackers == null || trackers.isEmpty()) {
             this.running = false;
         }
+
+        before();
     }
 
     /**
@@ -69,7 +71,7 @@ public class Simulator implements Serializable {
      */
     public void start() {
         before();
-        simulate();
+        run();
     }
 
     /**
@@ -93,7 +95,8 @@ public class Simulator implements Serializable {
      * Used for simulating the trackers in cars. A car can be driving or
      * stationary.
      */
-    private void simulate() {
+    @Override
+    public void run() {
         while (running) {
             for (CarTracker tracker : trackers) {
                 simulateTracker(tracker);
@@ -105,6 +108,7 @@ public class Simulator implements Serializable {
                 Thread.sleep(simulationInterval);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+                break;
             }
         }
     }
@@ -119,7 +123,7 @@ public class Simulator implements Serializable {
      * <p/>
      * Next determine if the tracker's car is driving or stationary.
      *
-     * @param tracker to simulate.
+     * @param tracker to run.
      */
     private void simulateTracker(CarTracker tracker) {
         SimulationInfo info = tracker.getSimulationInfo();
@@ -160,7 +164,7 @@ public class Simulator implements Serializable {
      * After the simulation add a new current position to the trackingPeriod of
      * the tracker.
      *
-     * @param tracker to simulate.
+     * @param tracker to run.
      */
     private static void moveTracker(CarTracker tracker) {
         Position lastPosition = tracker.getLastPosition();
@@ -183,7 +187,7 @@ public class Simulator implements Serializable {
      * After the simulation add a new current position to the trackingPeriod of
      * the tracker.
      *
-     * @param tracker to simulate/
+     * @param tracker to run/
      */
     private static void holdTracker(CarTracker tracker) {
         tracker.getSimulationInfo().setSpeed(0.0);
