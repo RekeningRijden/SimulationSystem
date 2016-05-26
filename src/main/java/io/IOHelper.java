@@ -19,10 +19,6 @@ import java.util.ArrayList;
  */
 public class IOHelper {
 
-    public IOHelper() {
-        // empty constructor
-    }
-
     /**
      * File to save to, and retrieve data from.
      */
@@ -53,12 +49,25 @@ public class IOHelper {
      * @throws ClassNotFoundException to be thrown.
      */
     @SuppressWarnings("unchecked")
-    public static List<CarTracker> deserialize() throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(getFile()));
-        List<CarTracker> carTrackers = (List<CarTracker>) ois.readObject();
-        close(ois);
-
-        return carTrackers;
+    public static List<CarTracker> deserialize() {
+        ObjectInputStream ois = null;
+        try {
+            ois = new ObjectInputStream(new FileInputStream(getFile()));
+            List<CarTracker> carTrackers = (List<CarTracker>) ois.readObject();
+            close(ois);
+            return carTrackers;
+        } catch (IOException ex) {
+            Logger.getLogger(IOHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(IOHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                ois.close();
+            } catch (IOException ex) {
+                Logger.getLogger(IOHelper.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return new ArrayList<>();
     }
 
     /**

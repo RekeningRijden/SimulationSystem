@@ -2,6 +2,10 @@ package simulation;
 
 public class Constants {
 
+    private Constants() {
+
+    }
+
     /**
      * Borders of Portugal if Portugal was a rectangle.
      */

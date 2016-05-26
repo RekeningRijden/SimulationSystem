@@ -215,8 +215,7 @@ public class Simulator implements Runnable, Serializable {
         } catch (IOException | JSONException ex) {
             Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
         }
-        /* System.out.println("CarId= " + tracker.getId() + ", AuthoCod= :" + tracker.getAuthorisationCode() + " position long" + tracker.getLastPosition().getLongitude() + " position lat= " + tracker.getLastPosition().getLatitude()); */
-    }
+   }
 
     //<editor-fold desc="Utility Methods">
     /**

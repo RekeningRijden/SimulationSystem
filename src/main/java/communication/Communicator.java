@@ -28,18 +28,10 @@ import org.json.JSONObject;
  */
 public class Communicator {
 
-    public Communicator() {
-        // empty constructor
-    }
-
-    /**
-     * The test url of the Movementsystem api.
-     */
-    //private static final String BASE_URL_PRODUCTION = "http://localhost:8080/MovementSystem/api/trackers";
     /**
      * The production url of the Movementsystem api.
      */
-    private static final String BASE_URL_PRODUCTION = "http://movement.s63a.marijn.ws/api/trackers";
+    private static final String BASE_URL_PRODUCTION = "http://movement.s63a.marijn.ws/api/trackers"; // or for test: http://localhost:8080/MovementSystem/api/trackers
 
     private static final String CHARACTER_SET = "UTF-8";
 
@@ -56,13 +48,11 @@ public class Communicator {
         HttpPost post = new HttpPost(BASE_URL_PRODUCTION + "/" + tracker.getId() + "/movements");
         String jsonBody = gson.toJson(tracker.getCurrentTrackingPeriod());
         StringEntity postingString = new StringEntity(jsonBody, CHARACTER_SET);
-        //System.out.println("POSTString: " + jsonBody);
         post.setEntity(postingString);
         post.setHeader(HTTP.CONTENT_TYPE, "application/json");
         HttpResponse response = httpClient.execute(post);
-
+        
         String responseString = EntityUtils.toString(response.getEntity(), CHARACTER_SET);
-        //System.out.println("ResponseString: " + responseString);
         JSONObject json = new JSONObject(responseString);
         return json.getLong("serialNumber");
     }
