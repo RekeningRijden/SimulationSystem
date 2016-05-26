@@ -35,6 +35,10 @@ public class Communicator {
 
     private static final String CHARACTER_SET = "UTF-8";
 
+    private Communicator() {
+        // empty constructor
+    }
+
     /**
      * Adds a new trackingPosition to an existing cartracker
      *
@@ -51,7 +55,7 @@ public class Communicator {
         post.setEntity(postingString);
         post.setHeader(HTTP.CONTENT_TYPE, "application/json");
         HttpResponse response = httpClient.execute(post);
-        
+
         String responseString = EntityUtils.toString(response.getEntity(), CHARACTER_SET);
         JSONObject json = new JSONObject(responseString);
         return json.getLong("serialNumber");

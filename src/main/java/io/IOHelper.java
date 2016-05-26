@@ -65,10 +65,12 @@ public class IOHelper {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(IOHelper.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                ois.close();
-            } catch (IOException ex) {
-                Logger.getLogger(IOHelper.class.getName()).log(Level.SEVERE, null, ex);
+            if (ois != null) {
+                try {
+                    ois.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(IOHelper.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         return new ArrayList<>();
