@@ -72,7 +72,7 @@ public class Simulator implements Runnable, Serializable {
     public void start() {
         before();
         Thread thread = new Thread(this);
-        thread.run();
+        thread.start();
     }
 
     /**
@@ -82,7 +82,6 @@ public class Simulator implements Runnable, Serializable {
     private void before() {
         for (CarTracker tracker : trackers) {
             SimulationInfo simulationInfo = createSimulationInfo();
-            /* simulationInfo.setTrackingPeriodCycles(getRandomCycles(10, 480)); */
             simulationInfo.setTrackingPeriodCycles(1);
             if (tracker.getTrackingPeriods().isEmpty()) {
                 tracker.setInitialSimulationInfo(simulationInfo);
