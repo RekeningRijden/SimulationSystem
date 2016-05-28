@@ -4,6 +4,7 @@ import communication.Communicator;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import domain.CarTracker;
@@ -215,9 +216,10 @@ public class Simulator implements Runnable, Serializable {
         } catch (IOException | JSONException ex) {
             Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
         }
-   }
+    }
 
     //<editor-fold desc="Utility Methods">
+
     /**
      * Create a new simulationInfo object with random values.
      *
@@ -225,6 +227,10 @@ public class Simulator implements Runnable, Serializable {
      */
     private SimulationInfo createSimulationInfo() {
         int cyclesToDrive = getRandomCycles(5, 500);
+        if (new Random().nextBoolean()) {
+            cyclesToDrive = 0;
+        }
+
         int cyclesToWait = getRandomCycles(10, 1000);
         Position startingPosition = getPositionWithinBounds();
 
