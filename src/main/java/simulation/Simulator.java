@@ -14,10 +14,6 @@ import io.IOHelper;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.web.WebEvent;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-
 import org.json.JSONException;
 
 /**
