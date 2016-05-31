@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import domain.CarTracker;
+import java.util.ArrayList;
 
 /**
  * Class for saving and loading simulation data to a file.
@@ -23,6 +24,10 @@ public class IOHelper {
      */
     private static final String FILE = "C:\\School\\PTS6\\SimulationSystem\\trackers.tmp";
 
+    private IOHelper() {
+        // emtpy constructor
+    }
+
     /**
      * Save a list of carTrackers to a file.
      *
@@ -32,7 +37,7 @@ public class IOHelper {
         ObjectOutputStream oos = null;
         try {
             oos = new ObjectOutputStream(new FileOutputStream(getFile()));
-            oos.writeObject(carTrackers);
+            oos.writeObject((ArrayList) carTrackers);
         } catch (IOException ex) {
             Logger.getLogger(IOHelper.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -44,16 +49,31 @@ public class IOHelper {
      * Load previously used saved carTrackers from a file.
      *
      * @return a list of carTrackers.
-     * @throws IOException            to be thrown.
+     * @throws IOException to be thrown.
      * @throws ClassNotFoundException to be thrown.
      */
     @SuppressWarnings("unchecked")
-    public static List<CarTracker> deserialize() throws IOException, ClassNotFoundException {
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(getFile()));
-        List<CarTracker> carTrackers = (List<CarTracker>) ois.readObject();
-        close(ois);
-
-        return carTrackers;
+    public static List<CarTracker> deserialize() {
+        ObjectInputStream ois = null;
+        try {
+            ois = new ObjectInputStream(new FileInputStream(getFile()));
+            List<CarTracker> carTrackers = (List<CarTracker>) ois.readObject();
+            close(ois);
+            return carTrackers;
+        } catch (IOException ex) {
+            Logger.getLogger(IOHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(IOHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (ois != null) {
+                try {
+                    ois.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(IOHelper.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return new ArrayList<>();
     }
 
     /**

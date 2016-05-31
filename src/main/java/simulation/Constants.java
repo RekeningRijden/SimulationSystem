@@ -1,6 +1,6 @@
 package simulation;
 
-class Constants {
+public class Constants {
 
     /**
      * Borders of Portugal if Portugal was a rectangle.
@@ -9,4 +9,8 @@ class Constants {
     static final double SOUTH_BORDER = 37.2;
     static final double WEST_BORDER = -8.6;
     static final double EAST_BORDER = -7.6;
+
+    private Constants() {
+
+    }
 }

@@ -15,7 +15,8 @@ public class SimulationInfo implements Serializable {
     private int cyclesToDrive;
 
     /**
-     * SimulationCycles a tracker's car has to be stationary before it can drive again.
+     * SimulationCycles a tracker's car has to be stationary before it can drive
+     * again.
      */
     private int cyclesToWait;
 

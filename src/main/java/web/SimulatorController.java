@@ -11,12 +11,13 @@ import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
-
 import simulation.Simulator;
 
 /**
  * @author Sam
  */
+
+
 @Named
 @ApplicationScoped
 public class SimulatorController implements Serializable {
@@ -26,6 +27,8 @@ public class SimulatorController implements Serializable {
     private int trackingPeriodCycles = 1;  //use for testing
 
     private Simulator simulator;
+
+    private transient Thread simulationThread;
 
     /**
      * Start the simulation which is running on a newly spawned thread.
@@ -42,7 +45,7 @@ public class SimulatorController implements Serializable {
         if (trackers != null) {
             simulator = new Simulator(simulationInterval, trackingPeriodCycles, trackers);
 
-            Thread simulationThread = new Thread(simulator);
+            simulationThread = new Thread(simulator);
             simulationThread.start();
         }
     }

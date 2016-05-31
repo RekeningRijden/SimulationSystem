@@ -4,6 +4,7 @@ import communication.Communicator;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import domain.CarTracker;
@@ -53,9 +54,10 @@ public class Simulator implements Runnable, Serializable {
     public Simulator(long simulationInterval, int trackingPeriodCycles, List<CarTracker> trackers) {
         this.simulationInterval = simulationInterval;
         this.trackingPeriodCycles = trackingPeriodCycles;
-        this.carSpeed = (0.0002 * (this.simulationInterval / 1000));
         this.trackers = trackers;
-        
+
+        this.carSpeed = 0.0002 * (this.simulationInterval / 1000);
+
         if (trackers == null || trackers.isEmpty()) {
             this.running = false;
         }
@@ -68,7 +70,8 @@ public class Simulator implements Runnable, Serializable {
      */
     public void start() {
         before();
-        run();
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     /**
@@ -78,7 +81,6 @@ public class Simulator implements Runnable, Serializable {
     private void before() {
         for (CarTracker tracker : trackers) {
             SimulationInfo simulationInfo = createSimulationInfo();
-            //simulationInfo.setTrackingPeriodCycles(getRandomCycles(10, 480));
             simulationInfo.setTrackingPeriodCycles(1);
             if (tracker.getTrackingPeriods().isEmpty()) {
                 tracker.setInitialSimulationInfo(simulationInfo);
@@ -163,14 +165,14 @@ public class Simulator implements Runnable, Serializable {
      *
      * @param tracker to run.
      */
-    private void moveTracker(CarTracker tracker) {
+    private static void moveTracker(CarTracker tracker) {
         Position lastPosition = tracker.getLastPosition();
         double speed = tracker.getSimulationInfo().getSpeed();
 
         if (Constants.NORTH_BORDER < lastPosition.getLatitude() + speed
                 || Constants.SOUTH_BORDER > lastPosition.getLatitude() + speed) {
 
-            tracker.getSimulationInfo().setSpeed((speed * -1));
+            tracker.getSimulationInfo().setSpeed(speed * -1);
         }
 
         double newLatitude = lastPosition.getLatitude() + tracker.getSimulationInfo().getSpeed();
@@ -186,7 +188,7 @@ public class Simulator implements Runnable, Serializable {
      *
      * @param tracker to run/
      */
-    private void holdTracker(CarTracker tracker) {
+    private static void holdTracker(CarTracker tracker) {
         tracker.getSimulationInfo().setSpeed(0.0);
 
         tracker.getCurrentTrackingPeriod().addPosition(
@@ -212,7 +214,6 @@ public class Simulator implements Runnable, Serializable {
         } catch (IOException | JSONException ex) {
             Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("CarId= " + tracker.getId() + ", AuthoCod= :" + tracker.getAuthorisationCode() + " position long" + tracker.getLastPosition().getLongitude() + " position lat= " + tracker.getLastPosition().getLatitude());
     }
 
     //<editor-fold desc="Utility Methods">
@@ -223,6 +224,10 @@ public class Simulator implements Runnable, Serializable {
      */
     private SimulationInfo createSimulationInfo() {
         int cyclesToDrive = getRandomCycles(5, 500);
+        if (new Random().nextBoolean()) {
+            cyclesToDrive = 0;
+        }
+
         int cyclesToWait = getRandomCycles(10, 1000);
         Position startingPosition = getPositionWithinBounds();
 
@@ -241,7 +246,7 @@ public class Simulator implements Runnable, Serializable {
      * @param max value of the range.
      * @return amount of simulation cycles.
      */
-    private int getRandomCycles(int min, int max) {
+    private static int getRandomCycles(int min, int max) {
         return ThreadLocalRandom.current().nextInt((max - min) + 1) + min;
     }
 
@@ -250,7 +255,7 @@ public class Simulator implements Runnable, Serializable {
      *
      * @return position within the country's borders.
      */
-    private Position getPositionWithinBounds() {
+    private static Position getPositionWithinBounds() {
         double latitude = ThreadLocalRandom.current().nextDouble(
                 Constants.SOUTH_BORDER, Constants.NORTH_BORDER);
 
