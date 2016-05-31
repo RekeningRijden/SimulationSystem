@@ -13,6 +13,9 @@ import io.IOHelper;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.web.WebEvent;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 import org.json.JSONException;
 
@@ -47,18 +50,12 @@ public class Simulator implements Runnable, Serializable {
      */
     private List<CarTracker> trackers;
 
-    public Simulator(long simulationInterval, int trackingPeriodCycles) {
+    public Simulator(long simulationInterval, int trackingPeriodCycles, List<CarTracker> trackers) {
         this.simulationInterval = simulationInterval;
         this.trackingPeriodCycles = trackingPeriodCycles;
         this.carSpeed = (0.0002 * (this.simulationInterval / 1000));
-
-        try {
-            this.trackers = Communicator.getAllCartrackers();
-        } catch (IOException ex) {
-            Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
-            this.running = false;
-        }
-
+        this.trackers = trackers;
+        
         if (trackers == null || trackers.isEmpty()) {
             this.running = false;
         }
@@ -219,7 +216,6 @@ public class Simulator implements Runnable, Serializable {
     }
 
     //<editor-fold desc="Utility Methods">
-
     /**
      * Create a new simulationInfo object with random values.
      *

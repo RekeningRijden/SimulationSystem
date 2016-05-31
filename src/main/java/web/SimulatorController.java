@@ -1,9 +1,16 @@
 package web;
 
+import communication.Communicator;
+import domain.CarTracker;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 
 import simulation.Simulator;
 
@@ -24,10 +31,20 @@ public class SimulatorController implements Serializable {
      * Start the simulation which is running on a newly spawned thread.
      */
     public void start() {
-        simulator = new Simulator(simulationInterval, trackingPeriodCycles);
+        List<CarTracker> trackers = null;
+        try {
+            trackers = Communicator.getAllCartrackers();
+        } catch (IOException ex) {
+            Logger.getLogger(SimulatorController.class.getName()).log(Level.SEVERE, null, ex);
+            RequestContext.getCurrentInstance().execute("alert('failed to start simulation');");
+        }
 
-        Thread simulationThread = new Thread(simulator);
-        simulationThread.start();
+        if (trackers != null) {
+            simulator = new Simulator(simulationInterval, trackingPeriodCycles, trackers);
+
+            Thread simulationThread = new Thread(simulator);
+            simulationThread.start();
+        }
     }
 
     /**
