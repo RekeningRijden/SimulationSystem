@@ -9,8 +9,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import domain.CarTracker;
+
 import java.io.IOException;
 import java.util.List;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -31,7 +33,8 @@ public class Communicator {
     /**
      * The production url of the Movementsystem api.
      */
-    private static final String BASE_URL_PRODUCTION = "http://movement.s63a.marijn.ws/api/trackers"; // or for test: http://localhost:8080/MovementSystem/api/trackers
+    private static final String BASE_URL_PRODUCTION = "http://movement.s63a.marijn.ws/api/trackers";
+    //private static final String BASE_URL_PRODUCTION = "http://localhost:8080/MovementSystem/api/trackers";
 
     private static final String CHARACTER_SET = "UTF-8";
 
