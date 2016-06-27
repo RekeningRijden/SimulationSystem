@@ -13,6 +13,8 @@ import domain.CarTracker;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -84,6 +86,7 @@ public class Communicator {
             return gson.fromJson(responseString, new TypeToken<List<CarTracker>>() {
             }.getType());
         } catch (JsonSyntaxException ex) {
+            Logger.getLogger(Communicator.class.getName()).log(Level.SEVERE, null, ex);
             throw new IOException(ex.getMessage());
         }
     }
